@@ -28,23 +28,22 @@ module.exports = function(content) {
   const options = utils.getOptions(this);
 
   this.cacheable();
-  if (!hasModule(content)) return content;
 
-  const aliases = chain(options.aliases)
-    .invert()
-    .mapValues(alias => alias.replace(/\$$/, ''))
-    .value();
 
   let modulePath = this._module.userRequest;
   const moduleExt = path.extname(modulePath);
 
   modulePath = modulePath.replace(moduleExt, '');
 
-  const moduleName = formatModuleName(aliases[modulePath]);
+  const moduleName = formatModuleName(options.aliases[modulePath]);
   if (moduleName === 'pim/config-registry') {
     const moduleConfig = JSON.stringify(options.configMap || {});
 
     return `const __moduleConfig = ${replaceRequire(moduleConfig)} as const; ${content}`;
+  }
+
+  if (!options.configMap[moduleName]) {
+    return content;
   }
 
   const moduleConfig = JSON.stringify(options.configMap[moduleName] || {});

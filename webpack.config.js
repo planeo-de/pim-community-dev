@@ -5,6 +5,8 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const {chain} = require('lodash');
 
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -12,6 +14,11 @@ const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
+
+const configAliases = chain(aliases)
+    .invert()
+    .mapValues(alias => alias.replace(/\$$/, ''))
+    .value();
 
 // Plugin to make style components more readable in debug mode
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
@@ -21,7 +28,8 @@ createModuleRegistry(Object.keys(aliases), rootDir);
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', isStrict ? 'with typechecking' : '');
 
-const webpackConfig = {
+const speed = new SpeedMeasurePlugin();
+const webpackConfig = speed.wrap({
   stats: {
     hash: false,
     maxModules: 5,
@@ -83,7 +91,7 @@ const webpackConfig = {
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
-              aliases,
+              aliases: configAliases,
               configMap: config,
             },
           },
@@ -95,7 +103,6 @@ const webpackConfig = {
         test: /\.html$/,
         exclude: /node_modules|spec/,
         use: [
-          'thread-loader',
           {
             loader: 'raw-loader',
             options: {},
@@ -165,7 +172,6 @@ const webpackConfig = {
         test: /\.js$/,
         include: [/public\/bundles/, /webpack/, /spec/, /node_modules\/p\-queue/],
         use: [
-          'thread-loader',
           {
             loader: 'babel-loader',
             options: {
@@ -200,7 +206,7 @@ const webpackConfig = {
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
-              aliases,
+              aliases: configAliases,
               configMap: config,
             },
           },
@@ -252,6 +258,6 @@ const webpackConfig = {
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
     }),
   ],
-};
+});
 
 module.exports = webpackConfig;
