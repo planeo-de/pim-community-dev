@@ -47,8 +47,8 @@ akeneo_connectivity.connection:
       sub_title: Consultez notre App Store pour voir quelles applications peuvent être connectées avec Akeneo PIM.
       link: Accéder à l'Akeneo App Store
       helper:
-        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
-        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
+        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
+        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
         description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre App Store
         link: Aller sur la Marketplace web
       card:
@@ -360,7 +360,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connexion supprimée avec succès.
   helper:
-    title: '{0} Pour l''instant, vous n''avez aucune connexion pour lier votre PIM à des applications tierces.{1} Vous avez 1 connexion reliant votre PIM à une application tierce. Bien joué, ainsi votre PIM est bien intégré dans son écosystème.|]1,Inf] Vous avez {{ count }} connexions reliant votre PIM à des applications tierces. Bien joué, votre PIM est ainsi bien intégré dans son écosystème.'
+    title: '{0} Pour l''instant, vous n''avez aucune connexion pour lier votre PIM à des applications tierces.|{1} Vous avez 1 connexion reliant votre PIM à une application tierce. Bien joué, ainsi votre PIM est bien intégré dans son écosystème.|]1,Inf] Vous avez {{ count }} connexions reliant votre PIM à des applications tierces. Bien joué, votre PIM est ainsi bien intégré dans son écosystème.'
     description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
     link: Pour en savoir plus sur les Connexions, consultez cette page
   flow_type_helper:
@@ -416,7 +416,7 @@ akeneo_connectivity.connection:
         data_source: Envie de suivre vos connexions source à l'aide de beaux graphiques ?
         data_destination: Envie de suivre vos connexions destination à l'aide de beaux graphiques ?
       message_with_permission:
-        message: Créez-en une et activez son suivi 
+        message: Créez-en une et activez son suivi
         link: ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
@@ -438,7 +438,7 @@ akeneo_connectivity.connection:
       wrong_url: Cette valeur n'est pas une URL valide.
       required: Ce champ est obligatoire.
       not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
-      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
+      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées.
       not_allowed_url: Cette url n'est pas autorisée.
     flash:
       success: La souscription aux événements a bien été mise à jour.
@@ -453,7 +453,7 @@ akeneo_connectivity.connection:
         success: Le secret lié à la souscription aux événements a été régénéré avec succès.
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
     active_event_subscriptions_limit_reached:
-      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
+      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite.
       link: En savoir plus sur la configuration de la souscription aux événements.
     event_logs:
       title: Journal des événements
@@ -485,7 +485,7 @@ akeneo_connectivity.connection:
           all: Toutes
         info:
           title: Vous trouverez ici les logs liés à tous les événements envoyés vers cette connexion.
-          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice. 
+          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice.
           link: En savoir plus sur les logs liés aux événements
         headers:
           datetime: Date / heure
