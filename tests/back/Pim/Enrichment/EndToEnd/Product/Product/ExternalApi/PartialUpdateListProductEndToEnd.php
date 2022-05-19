@@ -101,6 +101,8 @@ JSON;
         Assert::assertEquals('familyA2', $esProduct['family']['code']);
     }
 
+    //todo test with endpoint products-uuid
+
     public function testCreateAndUpdateSameProduct()
     {
         $data =
