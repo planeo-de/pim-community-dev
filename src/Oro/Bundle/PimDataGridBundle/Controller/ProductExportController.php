@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductExportController
 {
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
-    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
+    private const FILE_PATH_KEYS = ['filePathProduct', 'filePathProductModel'];
 
     protected RequestStack $requestStack;
     protected MassActionDispatcher $massActionDispatcher;
@@ -88,6 +88,12 @@ class ProductExportController
                 $rawParameters['storage']['type'] = NoneStorage::TYPE;
                 $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
             }
+        }
+
+        if (isset($rawParameters['storage']['file_path'])) {
+            //TODO RAB-665 handle local storage on PaaS version
+            $rawParameters['storage']['type'] = NoneStorage::TYPE;
+            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['file_path'], $contextParameters);
         }
 
         if ($withGridContext) {

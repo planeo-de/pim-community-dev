@@ -26,7 +26,6 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
     public function __construct(
         private ConstraintCollectionProviderInterface $simpleConstraint,
         private array $supportedJobNames,
-        private string $filePathExtension
     ) {
     }
 
@@ -37,15 +36,6 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
-        $constraintFilePath = [
-            new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-            new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-            new Regex([
-                'pattern' => sprintf('/.\.%s$/', $this->filePathExtension),
-                'message' => sprintf('The extension file must be ".%s"', $this->filePathExtension)
-            ])
-        ];
-        $constraintFields['filePath'] = $constraintFilePath;
         $constraintFields['filters'] = [];
         $constraintFields['selected_properties'] = null;
         $constraintFields['selected_locales'] = new Optional(null);
