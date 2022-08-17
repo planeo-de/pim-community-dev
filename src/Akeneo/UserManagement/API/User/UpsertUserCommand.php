@@ -15,11 +15,11 @@ final class UpsertUserCommand
         public string $username,
         public string $password,
         public string $email,
+        public string $type,
         public string $firstName,
         public string $lastName,
-        public string $type,
-        public array $userGroupCodes,
         public array $roleCodes,
+        public array $groupCodes = [],
     ) {
     }
 }

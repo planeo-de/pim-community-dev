@@ -1123,6 +1123,11 @@ class User implements UserInterface, EquatableInterface
         $this->type = self::TYPE_JOB;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     /**
      * {@inheritdoc}
      */

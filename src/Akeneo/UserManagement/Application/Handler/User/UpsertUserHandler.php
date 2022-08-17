@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Akeneo\UserManagement\Application\Handler\User;
 
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\API\User\UpsertUserCommand;
 use Akeneo\UserManagement\API\User\UpsertUserHandlerInterface;
@@ -17,6 +18,8 @@ use Akeneo\UserManagement\Component\Factory\UserFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Updater\UserUpdater;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UpsertUserHandler implements UpsertUserHandlerInterface
@@ -40,19 +43,41 @@ final class UpsertUserHandler implements UpsertUserHandlerInterface
             $this->defineType($user, $upsertUserCommand->type);
         }
 
-        //TODO type should be validated
+        try {
+            if ($user->getType() !== $upsertUserCommand->type) {
+                throw new InvalidPropertyException(
+                    'type',
+                    $upsertUserCommand->type,
+                    null,
+                    "You could not change the user type"
+                );
+            }
 
-        $userPayload = [
-            'username' => $upsertUserCommand->username,
-            'password' => $upsertUserCommand->password,
-            'first_name' => $upsertUserCommand->firstName,
-            'last_name' => $upsertUserCommand->lastName,
-            'email' => $upsertUserCommand->email,
-            'groups' => $upsertUserCommand->userGroupCodes,
-            'roles' => $upsertUserCommand->roleCodes,
-        ];
+            $userPayload = [
+                'username' => $upsertUserCommand->username,
+                'password' => $upsertUserCommand->password,
+                'first_name' => $upsertUserCommand->firstName,
+                'last_name' => $upsertUserCommand->lastName,
+                'email' => $upsertUserCommand->email,
+                'groups' => $upsertUserCommand->groupCodes,
+                'roles' => $upsertUserCommand->roleCodes,
+            ];
 
-        $this->userUpdater->update($user, $userPayload);
+            $this->userUpdater->update($user, $userPayload);
+        } catch (InvalidPropertyException $exception) {
+            $violations = new ConstraintViolationList([
+                new ConstraintViolation(
+                    $exception->getMessage(),
+                    $exception->getMessage(),
+                    [],
+                    $upsertUserCommand,
+                    $exception->getPropertyName(),
+                    $exception->getPropertyValue()
+                ),
+            ]);
+
+            throw new ViolationsException($violations);
+        }
 
         $constraintViolations = $this->validator->validate($user);
 
