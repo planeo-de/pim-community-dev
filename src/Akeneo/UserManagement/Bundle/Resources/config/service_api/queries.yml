@@ -3,3 +3,11 @@ services:
     public: true
     arguments:
       $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
+
+  Akeneo\UserManagement\Application\Handler\User\UpsertUserHandler:
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.updater.user'
+      - '@pim_user.factory.user'
+      - '@pim_user.saver.user'
+      - '@validator'
