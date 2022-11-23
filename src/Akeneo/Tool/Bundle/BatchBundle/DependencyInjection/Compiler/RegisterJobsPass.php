@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler;
 
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -38,12 +39,16 @@ class RegisterJobsPass implements CompilerPassInterface
 
         $registryDefinition = $container->getDefinition(self::REGISTRY_ID);
         foreach ($container->findTaggedServiceIds(self::SERVICE_TAG) as $serviceId => $tags) {
+            $serviceDefinition = $container->getDefinition($serviceId);
+
             foreach ($tags as $tag) {
-                $connector = isset($tag['connector']) ? $tag['connector'] : self::DEFAULT_CONNECTOR;
-                $type = isset($tag['type']) ? $tag['type'] : self::DEFAULT_JOB_TYPE;
+                $connector = isset($tag['connector']) ?? self::DEFAULT_CONNECTOR;
+                $type = isset($tag['type']) ?? self::DEFAULT_JOB_TYPE;
                 $feature = $tag['feature'] ?? null;
-                $job = new Reference($serviceId);
-                $registryDefinition->addMethodCall('register', [$job, $type, $connector, $feature]);
+                $jobName = $serviceDefinition->getArgument(0);
+
+                $job = new ServiceClosureArgument(new Reference($serviceId));
+                $registryDefinition->addMethodCall('register', [$job, $jobName, $type, $connector, $feature]);
             }
         }
     }

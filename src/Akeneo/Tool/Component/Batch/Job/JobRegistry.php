@@ -14,7 +14,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 class JobRegistry
 {
     /** @var JobInterface[] */
-    protected $jobs = [];
+    protected array $jobs = [];
 
     /**
      * @param FeatureFlags $featureFlags
@@ -24,21 +24,16 @@ class JobRegistry
     }
 
     /**
-     * @param JobInterface $job
-     * @param string       $jobType
-     * @param string       $connector
-     *
      * @throws DuplicatedJobException
      */
-    public function register(JobInterface $job, $jobType, $connector, $feature = null)
+    public function register(\Closure $jobLoader, string $jobName, string $jobType, string $connector, ?string $feature = null)
     {
-        if (isset($this->jobs[$job->getName()])) {
-            throw new DuplicatedJobException(
-                sprintf('The job "%s" is already registered', $job->getName())
-            );
+        if (isset($this->jobs[$jobName])) {
+            throw new DuplicatedJobException(sprintf('The job "%s" is already registered', $jobName));
         }
-        $this->jobs[$job->getName()] = [
-            'job' => $job,
+
+        $this->jobs[$jobName] = [
+            'job_loader' => $jobLoader,
             'type' => $jobType,
             'connector' => $connector,
             'feature' => $feature,
@@ -52,15 +47,13 @@ class JobRegistry
      *
      * @return JobInterface
      */
-    public function get($jobName)
+    public function get(string $jobName): JobInterface
     {
         if (!isset($this->jobs[$jobName])) {
-            throw new UndefinedJobException(
-                sprintf('The job "%s" is not registered', $jobName)
-            );
+            throw new UndefinedJobException(sprintf('The job "%s" is not registered', $jobName));
         }
 
-        return $this->jobs[$jobName]['job'];
+        return $this->jobs[$jobName]['job_loader']();
     }
 
     /**
@@ -70,10 +63,9 @@ class JobRegistry
     public function isEnabled(string $jobName): bool
     {
         if (!isset($this->jobs[$jobName])) {
-            throw new UndefinedJobException(
-                sprintf('The job "%s" is not registered', $jobName)
-            );
+            throw new UndefinedJobException(sprintf('The job "%s" is not registered', $jobName));
         }
+
         $feature = $this->jobs[$jobName]['feature'];
 
         return null === $feature || $this->featureFlags->isEnabled($feature);
@@ -87,19 +79,17 @@ class JobRegistry
     /**
      * @return JobInterface[]
      */
-    public function all()
+    public function all(): array
     {
-        return array_map(static fn (array $job) => $job['job'], $this->getAllEnabledJobs());
+        return array_map(static fn (array $job) => $job['job_loader'](), $this->getAllEnabledJobs());
     }
 
     /**
-     * @param string $jobType
-     *
      * @throws UndefinedJobException
      *
      * @return JobInterface[]
      */
-    public function allByType($jobType)
+    public function allByType(string $jobType): array
     {
         $jobs = array_filter(
             $this->getAllEnabledJobs(),
@@ -114,19 +104,17 @@ class JobRegistry
             );
         }
 
-        return array_map(static fn (array $job) => $job['job'], $jobs);
+        return array_map(static fn (array $job) => $job['job_loader'](), $jobs);
     }
 
     /**
-     * @param string $jobType
-     *
      * @throws UndefinedJobException
      *
      * @return JobInterface[][]
      */
-    public function allByTypeGroupByConnector($jobType)
+    public function allByTypeGroupByConnector(string $jobType): array
     {
-        $jobs = array_filter($this->getAllEnabledJobs(), fn ($job) => $job['type'] === $jobType);
+        $jobs = array_filter($this->getAllEnabledJobs(), fn (array $job) => $job['type'] === $jobType);
 
         if (empty($jobs)) {
             throw new UndefinedJobException(
@@ -137,7 +125,8 @@ class JobRegistry
         return array_reduce(
             $jobs,
             function ($groupedJobs, $job) {
-                $groupedJobs[$job['connector']][$job['job']->getName()] = $job['job'];
+                $job = $job['job_loader']();
+                $groupedJobs[$job['connector']][$job->getName()] = $job;
 
                 return $groupedJobs;
             },
@@ -148,12 +137,12 @@ class JobRegistry
     /**
      * @return string[]
      */
-    public function getConnectors()
+    public function getConnectors(): array
     {
         return array_unique(array_map(static fn (array $job) => $job['connector'], $this->getAllEnabledJobs()));
     }
 
-    private function getAllEnabledJobs()
+    private function getAllEnabledJobs(): array
     {
         return array_filter(
             $this->jobs,
