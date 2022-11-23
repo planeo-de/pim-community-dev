@@ -18,6 +18,7 @@ use Webmozart\Assert\Assert;
 final class MigrateZddCommand extends Command
 {
     protected static $defaultName = 'pim:zdd-migration:migrate';
+    protected static $defaultDescription = 'Execute ZDD Migrations';
 
     /** @var ZddMigration[] */
     private array $zddMigrations;
@@ -36,11 +37,6 @@ final class MigrateZddCommand extends Command
         ));
 
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this->setDescription('Execute ZDD Migrations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

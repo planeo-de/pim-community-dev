@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListJobsCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:list-jobs';
+    protected static $defaultDescription = 'List the existing job instances';
 
     /**
      * @staticvar string Option used to list all jobs
@@ -43,15 +44,7 @@ class ListJobsCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('List the existing job instances')
-            ->addOption(
-                'type',
-                't',
-                InputOption::VALUE_REQUIRED,
-                'The type of jobs to list (import|export|all)',
-                static::LIST_ALL
-            );
+        $this->addOption('type', 't', InputOption::VALUE_REQUIRED, 'The type of jobs to list (import|export|all)', static::LIST_ALL);
     }
 
     /**

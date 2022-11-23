@@ -21,6 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class CreateJobInstanceCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:create-job';
+    protected static $defaultDescription = 'Create a job instance';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
@@ -36,9 +37,7 @@ class CreateJobInstanceCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Create a job instance')
-            ->addArgument('connector', InputArgument::REQUIRED, 'Connector code')
+        $this->addArgument('connector', InputArgument::REQUIRED, 'Connector code')
             ->addArgument('job', InputArgument::REQUIRED, 'Job name')
             ->addArgument('type', InputArgument::REQUIRED, 'Job type')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')

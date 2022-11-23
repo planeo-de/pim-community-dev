@@ -24,6 +24,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class ResetIndexesCommand extends Command
 {
     protected static $defaultName = 'akeneo:elasticsearch:reset-indexes';
+    protected static $defaultDescription = 'Resets all registered ES indexes';
     /**
      * @var ClientRegistry
      */
@@ -48,8 +49,7 @@ class ResetIndexesCommand extends Command
                 InputOption::VALUE_NONE,
                 'Resets registered ES indexes prior to reindex'
             )
-            ->addOption('index', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'ES index name to reset')
-            ->setDescription('Resets all registered ES indexes');
+            ->addOption('index', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'ES index name to reset');
     }
 
     /**

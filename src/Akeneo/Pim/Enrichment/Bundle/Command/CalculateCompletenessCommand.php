@@ -28,6 +28,7 @@ class CalculateCompletenessCommand extends Command
     private const DEFAULT_BATCH_SIZE = 1000;
 
     protected static $defaultName = 'pim:completeness:calculate';
+    protected static $defaultDescription = 'Launch the product completeness calculation';
 
     /** @var ProductAndAncestorsIndexer */
     private $productAndAncestorsIndexer;
@@ -54,15 +55,7 @@ class CalculateCompletenessCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Launch the product completeness calculation')
-            ->addOption(
-                'batch-size',
-                false,
-                InputArgument::OPTIONAL,
-                'The number of product completeness calculated in one cycle.',
-                self::DEFAULT_BATCH_SIZE
-            )
+        $this->addOption('batch-size', false, InputArgument::OPTIONAL, 'The number of product completeness calculated in one cycle.', self::DEFAULT_BATCH_SIZE)
         ;
     }
 

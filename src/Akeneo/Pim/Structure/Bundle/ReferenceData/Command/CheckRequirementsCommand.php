@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckRequirementsCommand extends Command
 {
     protected static $defaultName = 'pim:reference-data:check';
+    protected static $defaultDescription = 'Check the requirements of the reference data configuration';
 
     /** @var ConfigurationRegistryInterface */
     private $configurationRegistry;
@@ -47,12 +48,6 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Check the requirements of the reference data configuration');
-    }
-
     /**
      * {@inheritdoc}
      */

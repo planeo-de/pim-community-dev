@@ -14,6 +14,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class RestoreAdminRolePermissionsCommand extends Command
 {
     protected static $defaultName = 'pim:user:restore-admin-permissions';
+    protected static $defaultDescription = 'Restore all permissions to the <info>ROLE_ADMINISTRATOR</info> user role';
 
     public function __construct(private RestoreAdminRolePermissions $restoreAdminRolePermissions)
     {
@@ -22,14 +23,7 @@ class RestoreAdminRolePermissionsCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription('Restore all permissions to the <info>ROLE_ADMINISTRATOR</info> user role')
-            ->addOption(
-                'create',
-                'c',
-                InputOption::VALUE_NONE,
-                'Recreate the <info>ROLE_ADMINISTRATOR</info> user role if it does not exist'
-            )
+        $this->addOption('create', 'c', InputOption::VALUE_NONE, 'Recreate the <info>ROLE_ADMINISTRATOR</info> user role if it does not exist')
         ;
     }
 

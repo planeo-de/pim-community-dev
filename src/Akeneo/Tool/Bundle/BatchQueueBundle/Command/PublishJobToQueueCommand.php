@@ -27,6 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PublishJobToQueueCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:publish-job-to-queue';
+    protected static $defaultDescription = 'Publish a registered job instance to execute into the job execution queue';
 
     public const EXIT_SUCCESS_CODE = 0;
 
@@ -66,9 +67,7 @@ class PublishJobToQueueCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Publish a registered job instance to execute into the job execution queue')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
+        $this->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addOption(
                 'config',
                 'c',
@@ -85,7 +84,7 @@ class PublishJobToQueueCommand extends Command
             ->addOption(
                 'email',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'The email to notify at the end of the job execution'
             )
             ->addOption(

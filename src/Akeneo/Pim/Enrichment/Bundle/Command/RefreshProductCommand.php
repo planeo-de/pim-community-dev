@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RefreshProductCommand extends Command
 {
     protected static $defaultName = 'pim:product:refresh';
+    protected static $defaultDescription = 'Refresh the values of the given products';
 
     /** @var BulkSaverInterface */
     private $productSaver;
@@ -58,8 +59,7 @@ class RefreshProductCommand extends Command
                 InputArgument::REQUIRED,
                 'The product identifiers to clean (comma separated values)'
             )
-            ->setHidden(true)
-            ->setDescription('Refresh the values of the given products');
+            ->setHidden(true);
     }
 
     /**

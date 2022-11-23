@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateClientCommand extends Command
 {
     protected static $defaultName = 'pim:oauth-server:create-client';
+    protected static $defaultDescription = 'Creates a new pair of client id / secret for the web API';
 
     /** @var ClientManagerInterface */
     private $clientManager;
@@ -38,14 +39,7 @@ class CreateClientCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Creates a new pair of client id / secret for the web API')
-            ->addOption(
-                'redirect_uri',
-                null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Sets redirect uri for client.'
-            )
+        $this->addOption('redirect_uri', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Sets redirect uri for client.')
             ->addOption(
                 'grant_type',
                 null,

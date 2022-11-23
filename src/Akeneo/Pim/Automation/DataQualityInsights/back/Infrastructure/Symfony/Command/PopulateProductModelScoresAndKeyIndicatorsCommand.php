@@ -23,6 +23,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 {
     private const BULK_SIZE = 1000;
     protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores-and-ki';
+    protected static $defaultDescription = 'Populate scores and key indicators for existing product models';
 
     public function __construct(
         private Connection $dbConnection,
@@ -34,7 +35,6 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Populate scores and key indicators for existing product models');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

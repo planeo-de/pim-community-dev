@@ -19,6 +19,7 @@ final class MigrateJobExecutionWarningCountCommand extends Command
     private const BULK_SIZE = 1000;
 
     protected static $defaultName = 'akeneo:batch:migrate-job-execution-warning-count';
+    protected static $defaultDescription = 'Calculate and store the number of warnings for every job step execution';
 
     private Connection $dbConnection;
 
@@ -31,9 +32,7 @@ final class MigrateJobExecutionWarningCountCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription('Calculate and store the number of warnings for every job step execution')
-            ->addOption('bulk-size', null, InputOption::VALUE_REQUIRED, 'Bulk size', self::BULK_SIZE)
+        $this->addOption('bulk-size', null, InputOption::VALUE_REQUIRED, 'Bulk size', self::BULK_SIZE)
         ;
     }
 

@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 class OroTranslationDumpCommand extends Command
 {
     protected static $defaultName = 'oro:translation:dump';
+    protected static $defaultDescription = 'Dumps oro js-translations';
 
     /** @var Controller */
     private $controller;
@@ -56,13 +57,7 @@ class OroTranslationDumpCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Dumps oro js-translations')
-            ->addArgument(
-                'locale',
-                InputArgument::OPTIONAL,
-                'List of locales, whose translations should to be dumped'
-            )
+        $this->addArgument('locale', InputArgument::OPTIONAL, 'List of locales, whose translations should to be dumped')
             ->addOption(
                 'debug',
                 null,

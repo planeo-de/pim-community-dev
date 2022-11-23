@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class QueryHelpProductCommand extends Command
 {
     protected static $defaultName = 'pim:product:query-help';
+    protected static $defaultDescription = 'Display useable product query filters';
 
     /** @var DumperInterface */
     private $fieldDumper;
@@ -36,12 +37,6 @@ class QueryHelpProductCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Display useable product query filters');
-    }
-
     /**
      * {@inheritdoc}
      */

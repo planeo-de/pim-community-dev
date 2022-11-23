@@ -29,6 +29,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateUserCommand extends Command
 {
     protected static $defaultName = 'pim:user:create';
+    protected static $defaultDescription = <<<DESC
+Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
+When launched non interactively you have to provide arguments to the command. For instance:
+
+    pim:user:create kbeck secretp@ssw0rd kbeck@example.com Kent Beck en_US --admin -n
+
+When launched interactively, command arguments will be ignored.'
+DESC;
 
     /** @var string */
     private $password;
@@ -106,18 +114,7 @@ class CreateUserCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription(
-                <<<DESC
-Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
-When launched non interactively you have to provide arguments to the command. For instance:
-
-    pim:user:create kbeck secretp@ssw0rd kbeck@example.com Kent Beck en_US --admin -n
-
-When launched interactively, command arguments will be ignored.'
-DESC
-            )
-            ->addArgument('username')
+        $this->addArgument('username')
             ->addArgument('password')
             ->addArgument('email')
             ->addArgument('firstName')

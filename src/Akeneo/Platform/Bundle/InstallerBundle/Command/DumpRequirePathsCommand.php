@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpRequirePathsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:dump-require-paths';
+    protected static $defaultDescription = 'Dump the paths for all the requirejs.yml files for each bundle';
 
     const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
 
@@ -38,11 +39,6 @@ class DumpRequirePathsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this->setDescription('Dump the paths for all the requirejs.yml files for each bundle');
-    }
-
     /**
      * {@inheritdoc}
      */

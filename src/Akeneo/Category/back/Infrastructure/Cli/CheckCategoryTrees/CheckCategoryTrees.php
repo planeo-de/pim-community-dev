@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckCategoryTrees extends Command
 {
     protected static $defaultName = 'akeneo:categories:check-order';
+    protected static $defaultDescription = 'Check all category trees against nested structure';
 
     private Connection $connection;
 
@@ -60,8 +61,7 @@ class CheckCategoryTrees extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Whether we update the categories in DB',
-            )
-            ->setDescription('Check all category trees against nested structure');
+            );
     }
 
     /**

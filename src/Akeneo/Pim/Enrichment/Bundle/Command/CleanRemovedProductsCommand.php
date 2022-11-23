@@ -26,7 +26,7 @@ class CleanRemovedProductsCommand extends Command
     private const DEFAULT_BATCH_SIZE = 1000;
 
     protected static $defaultName = 'pim:product:clean-removed-products';
-    protected static $description = 'Erase documents present in Elasticsearch but missing in MySQL';
+    protected static $defaultDescription = 'Erase documents present in Elasticsearch but missing in MySQL';
 
     public function __construct(
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,

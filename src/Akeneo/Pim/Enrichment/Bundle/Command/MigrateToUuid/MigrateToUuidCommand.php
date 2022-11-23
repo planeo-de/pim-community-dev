@@ -20,6 +20,7 @@ class MigrateToUuidCommand extends Command
     use MigrateToUuidTrait;
 
     protected static $defaultName = 'pim:product:migrate-to-uuid';
+    protected static $defaultDescription = 'Migrate databases to product uuids';
 
     private const DQI_JOB_NAME = 'data_quality_insights_evaluations';
     private const WAIT_TIME_IN_SECONDS = 30;
@@ -56,7 +57,6 @@ class MigrateToUuidCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Migrate databases to product uuids');
         $this->addOption('dry-run', 'd', InputOption::VALUE_NEGATABLE, 'dry run', false);
         $this->addOption('with-stats', 's', InputOption::VALUE_NEGATABLE, 'Display stats (be careful the command is way too slow)', false);
         $this->addOption('wait-for-dqi', 'w', InputOption::VALUE_NEGATABLE, 'Wait for DQI job before starting', true);

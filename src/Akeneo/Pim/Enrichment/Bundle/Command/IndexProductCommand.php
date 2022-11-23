@@ -30,6 +30,7 @@ class IndexProductCommand extends Command
     private const ERROR_CODE_USAGE = 1;
 
     protected static $defaultName = 'pim:product:index';
+    protected static $defaultDescription = 'Index all or some products into Elasticsearch';
 
     /** @var ProductAndAncestorsIndexer */
     private $productAndAncestorsIndexer;
@@ -81,8 +82,7 @@ class IndexProductCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Number of products to index per batch',
                 self::DEFAULT_BATCH_SIZE
-            )
-            ->setDescription('Index all or some products into Elasticsearch');
+            );
     }
 
     /**

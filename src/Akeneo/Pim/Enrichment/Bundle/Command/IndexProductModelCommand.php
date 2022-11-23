@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IndexProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product-model:index';
+    protected static $defaultDescription = 'Index all or some product models into Elasticsearch';
 
     private const DEFAULT_BATCH_SIZE = 1000;
 
@@ -90,8 +91,7 @@ class IndexProductModelCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Number of product models to index per batch',
                 self::DEFAULT_BATCH_SIZE
-            )
-            ->setDescription('Index all or some product models into Elasticsearch');
+            );
     }
 
     /**

@@ -26,6 +26,7 @@ class CreateConnectionCommand extends Command
      * @var string
      */
     protected static $defaultName = 'akeneo:connectivity-connection:create';
+    protected static $defaultDescription = 'Creates a new connection';
 
     public function __construct(
         private CreateConnectionHandler $createConnection,
@@ -39,13 +40,7 @@ class CreateConnectionCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Creates a new connection')
-            ->addArgument(
-                'code',
-                InputArgument::REQUIRED,
-                'Code of the connection.'
-            )
+        $this->addArgument('code', InputArgument::REQUIRED, 'Code of the connection.')
             ->addOption(
                 'flow-type',
                 null,

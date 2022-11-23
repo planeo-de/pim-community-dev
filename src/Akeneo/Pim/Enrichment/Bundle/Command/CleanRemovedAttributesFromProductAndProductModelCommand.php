@@ -40,6 +40,7 @@ use Symfony\Component\Security\Core\User\User;
 class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product:clean-removed-attributes';
+    protected static $defaultDescription = 'Removes all values of deleted attributes on all products and product models';
     private const JOB_NAME = 'clean_removed_attribute_job';
     private const JOB_TRACKER_ROUTE = 'akeneo_job_process_tracker_details';
 
@@ -97,9 +98,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Removes all values of deleted attributes on all products and product models')
-            ->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
+        $this->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
             ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 

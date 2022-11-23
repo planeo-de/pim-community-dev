@@ -19,6 +19,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class RevokeClientCommand extends Command
 {
     protected static $defaultName = 'pim:oauth-server:revoke-client';
+    protected static $defaultDescription = 'This command revokes a pair of client id / secret';
 
     /** @var ClientManagerInterface */
     private $clientManager;
@@ -35,13 +36,7 @@ class RevokeClientCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('This command revokes a pair of client id / secret')
-            ->addArgument(
-                'client_id',
-                InputArgument::REQUIRED,
-                'The client id to revoke.'
-            )
+        $this->addArgument('client_id', InputArgument::REQUIRED, 'The client id to revoke.')
         ;
     }
 

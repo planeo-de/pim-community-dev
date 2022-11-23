@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckRequirementsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:check-requirements';
+    protected static $defaultDescription = 'Check requirements for Akeneo PIM';
 
     public function __construct(
         private string $rootDirectory
@@ -29,11 +30,6 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this->setDescription('Check requirements for Akeneo PIM');
-    }
-
     /**
      * {@inheritdoc}
      */

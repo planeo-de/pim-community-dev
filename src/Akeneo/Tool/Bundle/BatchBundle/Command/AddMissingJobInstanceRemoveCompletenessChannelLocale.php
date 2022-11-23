@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AddMissingJobInstanceRemoveCompletenessChannelLocale extends Command
 {
     protected static $defaultName = 'akeneo:batch:add-missing-job-instance-remove-completeness-for-channel-and-locale';
+    protected static $defaultDescription = 'Add missing job instance remove_completeness_for_channel_and_locale';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
@@ -32,11 +33,6 @@ class AddMissingJobInstanceRemoveCompletenessChannelLocale extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this->setDescription('Add missing job instance remove_completeness_for_channel_and_locale');
-    }
-
     /**
      * {@inheritdoc}
      */

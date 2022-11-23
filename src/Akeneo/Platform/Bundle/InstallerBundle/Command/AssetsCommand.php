@@ -22,6 +22,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class AssetsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:assets';
+    protected static $defaultDescription = 'Install assets for Akeneo PIM';
 
     /** @var CommandExecutor */
     protected $commandExecutor;
@@ -57,9 +58,7 @@ class AssetsCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Install assets for Akeneo PIM')
-            ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
+        $this->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous assets');
     }
 

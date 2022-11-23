@@ -20,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SystemInfoCommand extends Command
 {
     protected static $defaultName = 'pim:system:information';
+    protected static $defaultDescription = 'Displays Akeneo PIM system information';
 
     private TranslatorInterface $translator;
     private ChainedDataCollector $chainedDataCollector;
@@ -37,12 +38,6 @@ class SystemInfoCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Displays Akeneo PIM system information');
-    }
-
     /**
      * {@inheritdoc}
      */

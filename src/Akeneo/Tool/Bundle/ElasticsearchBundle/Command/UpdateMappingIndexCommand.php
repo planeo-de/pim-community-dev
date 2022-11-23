@@ -26,6 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class UpdateMappingIndexCommand extends Command
 {
     protected static $defaultName = 'akeneo:elasticsearch:update-mapping';
+    protected static $defaultDescription = 'Update index mapping to new index mapping definition with downtime';
 
     /** @var ClientRegistry */
     private $esClientsRegistry;
