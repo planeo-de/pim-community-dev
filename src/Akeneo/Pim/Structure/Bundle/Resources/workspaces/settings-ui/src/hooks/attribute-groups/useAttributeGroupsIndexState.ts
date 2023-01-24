@@ -20,13 +20,17 @@ const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const [groups, setAttributeGroups] = useState<AttributeGroup[]>([]);
   const [isPending, setIsPending] = useState(true);
+  const [itemSelected, setItemSelected] = useState(false);
   const router = useRouter();
 
   const redirect = useRedirectToAttributeGroup();
 
   const refresh = useCallback(
-    (list: AttributeGroup[]) => {
-      setAttributeGroups(list);
+    (AttributeGroups: AttributeGroup[]) => {
+      setItemSelected(AttributeGroups.map(attributeGroup => {
+        return attributeGroup.selected;
+      }).includes(true));
+      setAttributeGroups(AttributeGroups);
     },
     [setAttributeGroups]
   );
@@ -36,9 +40,12 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     const route = router.generate(ATTRIBUTE_GROUP_INDEX_ROUTE);
     const response = await fetch(route);
-    const groups = await response.json();
+    const groups: AttributeGroup[] = await response.json();
 
-    setAttributeGroups(groups);
+    setAttributeGroups(groups.map((group: AttributeGroup) => {
+      group.selected = false;
+      return group;
+    }));
     setIsPending(false);
   }, [refresh]);
 
@@ -51,6 +58,21 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     await saveAttributeGroupsOrder(order);
   }, [groups]);
+
+  const refreshSelection = useCallback((code: string) => {
+    const reorderedGroups = groups.map(attributeGroup => {
+      if (attributeGroup.code === code) {
+        return {
+          ...attributeGroup,
+          selected: !attributeGroup.selected
+        };
+      }
+
+      return  attributeGroup;
+    });
+
+    refresh(reorderedGroups);
+  }, [refresh, groups]);
 
   const refreshOrder = useCallback(
     (list: AttributeGroup[]) => {
@@ -79,6 +101,8 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
     refreshOrder,
     compare,
     isPending,
+    refreshSelection,
+    itemSelected
   };
 };
 

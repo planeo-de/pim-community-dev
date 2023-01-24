@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
+import {Search, useAutoFocus, Table, Badge, useBooleanState} from 'akeneo-design-system';
 import {useDebounceCallback, useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
-  const {refreshOrder} = useAttributeGroupsIndexState();
+  const {refreshOrder, refreshSelection, itemSelected} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
   const {filteredGroups, search} = useFilteredAttributeGroups(groups);
@@ -58,7 +58,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
         />
       ) : (
         <Table
-          isDragAndDroppable={sortGranted}
+          isDragAndDroppable={sortGranted && !itemSelected}
           isSelectable={true}
           onReorder={order => refreshOrder(order.map(index => groups[index]))}
         >
@@ -72,7 +72,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           </Table.Header>
           <Table.Body>
             {filteredGroups.map(group => (
-              <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
+              <Table.Row key={group.code} isSelected={group.selected} onSelectToggle={selected => refreshSelection(group.code)}>
                 <Table.Cell>{getLabel(group)}</Table.Cell>
                 {featureFlags.isEnabled('data_quality_insights') && (
                   <Table.Cell>
