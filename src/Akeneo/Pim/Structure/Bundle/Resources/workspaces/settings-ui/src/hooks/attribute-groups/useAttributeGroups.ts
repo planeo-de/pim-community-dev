@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../models';
 
-const useGetAttributeGroups = () => {
+const useAttributeGroups = () => {
   const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
   const [isPending, setIsPending] = useState(true);
   const router = useRouter();
@@ -34,7 +34,7 @@ const useGetAttributeGroups = () => {
     setIsPending(false);
   }, [router]);
 
-  return {attributeGroups, isPending};
+  return {attributeGroups, setAttributeGroups, isPending};
 };
 
-export {useGetAttributeGroups};
+export {useAttributeGroups};

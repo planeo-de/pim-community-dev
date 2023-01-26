@@ -1,33 +1,20 @@
 import React, {createContext, FC} from 'react';
 import {AttributeGroup} from '../../models';
-import {useInitialAttributeGroupsIndexState} from '../../hooks/attribute-groups';
-import {AfterMoveRowHandler, CompareRowDataHandler} from '../shared/providers';
+import {useAttributeGroups} from '../../hooks';
 
-type AttributeGroupsIndexState = {
-  groups: AttributeGroup[];
-  saveOrder: () => Promise<void>;
-  load: () => Promise<void>;
-  redirect: (group: AttributeGroup) => void;
-  refresh: (refreshedGroups: AttributeGroup[]) => void;
-  refreshOrder: AfterMoveRowHandler<AttributeGroup>;
-  compare: CompareRowDataHandler<AttributeGroup>;
+type AttributeGroups = {
+  attributeGroups: AttributeGroup[];
   isPending: boolean;
 };
 
-const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
-  groups: [],
-  saveOrder: async () => {},
-  load: async () => {},
-  redirect: () => {},
-  refresh: () => {},
-  refreshOrder: () => {},
-  compare: () => -1,
+const AttributeGroupsIndexContext = createContext<AttributeGroups>({
+  attributeGroups: [],
   isPending: true,
 });
 
 const AttributeGroupsIndexProvider: FC = ({children}) => {
-  const state = useInitialAttributeGroupsIndexState();
+  const state = useAttributeGroups();
   return <AttributeGroupsIndexContext.Provider value={state}>{children}</AttributeGroupsIndexContext.Provider>;
 };
 
-export {AttributeGroupsIndexProvider, AttributeGroupsIndexState, AttributeGroupsIndexContext};
+export {AttributeGroupsIndexProvider, AttributeGroups, AttributeGroupsIndexContext};

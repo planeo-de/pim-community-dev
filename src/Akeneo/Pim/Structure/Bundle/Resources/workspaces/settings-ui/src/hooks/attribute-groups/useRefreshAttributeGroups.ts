@@ -1,12 +1,13 @@
 import {useState} from 'react';
 import {AttributeGroup} from '../../models';
+import {useAttributeGroups} from './useAttributeGroups';
 
 const useRefreshAttributeGroups = (): {
   refreshSelection: (code: string) => void;
   refreshOrder: (attributeGroups: AttributeGroup[]) => void;
   itemSelected: boolean;
 } => {
-  const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
+  const {attributeGroups, setAttributeGroups} = useAttributeGroups();
   const [itemSelected, setItemSelected] = useState(false);
 
   const refresh = (AttributeGroups: AttributeGroup[]) => {

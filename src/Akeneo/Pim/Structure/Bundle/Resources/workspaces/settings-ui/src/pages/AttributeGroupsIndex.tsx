@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react';
 import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
-import {useGetAttributeGroups} from '../hooks';
+import {useAttributeGroups} from '../hooks';
 import {Breadcrumb} from 'akeneo-design-system';
 
 const AttributeGroupsIndex: FC = () => {
-  const {attributeGroups, isPending} = useGetAttributeGroups();
+  const {attributeGroups, isPending} = useAttributeGroups();
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
 

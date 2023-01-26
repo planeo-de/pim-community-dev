@@ -3,4 +3,4 @@ export * from './useGetAttributeGroupLabel';
 export * from './useAttributeGroupPermissions';
 export * from './useRedirectToAttributeGroup';
 export * from './useFilteredAttributeGroups';
-export * from './useGetAttributeGroups';
+export * from './useAttributeGroups';
