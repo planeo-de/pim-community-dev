@@ -1,21 +1,15 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
-import {useAttributeGroupsIndexState} from '../hooks';
+import {useGetAttributeGroups} from '../hooks';
 import {Breadcrumb} from 'akeneo-design-system';
 
 const AttributeGroupsIndex: FC = () => {
-  const {groups, load, isPending} = useAttributeGroupsIndexState();
+  const {attributeGroups, isPending} = useGetAttributeGroups();
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
 
-  const [groupCount, setGroupCount] = useState<number>(groups.length);
-
-  useEffect(() => {
-    (async () => {
-      await load();
-    })();
-  }, []);
+  const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
 
   return (
     <>
@@ -40,7 +34,7 @@ const AttributeGroupsIndex: FC = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <AttributeGroupsDataGrid groups={groups} onGroupCountChange={setGroupCount} />
+        <AttributeGroupsDataGrid attributeGroups={attributeGroups} onAttributeGroupCountChange={setGroupCount} />
       </PageContent>
     </>
   );

@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Search, useAutoFocus, Table, Badge, useBooleanState} from 'akeneo-design-system';
+import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
 import {useDebounceCallback, useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
-  useAttributeGroupsIndexState,
+  useRefreshAttributeGroups,
   useFilteredAttributeGroups,
   useGetAttributeGroupLabel,
 } from '../../../hooks';
@@ -11,15 +11,15 @@ import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
 
 type Props = {
-  groups: AttributeGroup[];
-  onGroupCountChange: (newGroupCount: number) => void;
+  attributeGroups: AttributeGroup[];
+  onAttributeGroupCountChange: (newGroupCount: number) => void;
 };
 
-const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
-  const {refreshOrder, refreshSelection, itemSelected} = useAttributeGroupsIndexState();
+const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onAttributeGroupCountChange}) => {
+  const {refreshOrder, refreshSelection, itemSelected} = useRefreshAttributeGroups();
   const {sortGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
-  const {filteredGroups, search} = useFilteredAttributeGroups(groups);
+  const {filteredAttributeGroups, search} = useFilteredAttributeGroups(attributeGroups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,8 +35,8 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   };
 
   useEffect(() => {
-    onGroupCountChange(filteredGroups.length);
-  }, [filteredGroups.length]);
+    onAttributeGroupCountChange(filteredAttributeGroups.length);
+  }, [filteredAttributeGroups.length]);
 
   return (
     <>
@@ -48,10 +48,14 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
         inputRef={inputRef}
       >
         <Search.ResultCount>
-          {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredAttributeGroups.length},
+            filteredAttributeGroups.length
+          )}
         </Search.ResultCount>
       </Search>
-      {searchString !== '' && filteredGroups.length === 0 ? (
+      {searchString !== '' && filteredAttributeGroups.length === 0 ? (
         <NoResults
           title={translate('pim_enrich.entity.attribute_group.grid.no_search_result')}
           subtitle={translate('pim_datagrid.no_results_subtitle')}
@@ -60,7 +64,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
         <Table
           isDragAndDroppable={sortGranted && !itemSelected}
           isSelectable={true}
-          onReorder={order => refreshOrder(order.map(index => groups[index]))}
+          onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
         >
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
@@ -71,15 +75,19 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
             )}
           </Table.Header>
           <Table.Body>
-            {filteredGroups.map(group => (
-              <Table.Row key={group.code} isSelected={group.selected} onSelectToggle={selected => refreshSelection(group.code)}>
-                <Table.Cell>{getLabel(group)}</Table.Cell>
+            {filteredAttributeGroups.map(attributeGroup => (
+              <Table.Row
+                key={attributeGroup.code}
+                isSelected={attributeGroup.selected}
+                onSelectToggle={() => refreshSelection(attributeGroup.code)}
+              >
+                <Table.Cell>{getLabel(attributeGroup)}</Table.Cell>
                 {featureFlags.isEnabled('data_quality_insights') && (
                   <Table.Cell>
-                    <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
+                    <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
                       {translate(
                         `akeneo_data_quality_insights.attribute_group.${
-                          group.is_dqi_activated ? 'activated' : 'disabled'
+                          attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
                         }`
                       )}
                     </Badge>

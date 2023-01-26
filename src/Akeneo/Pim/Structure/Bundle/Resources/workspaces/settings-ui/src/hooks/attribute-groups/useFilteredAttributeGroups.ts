@@ -2,29 +2,29 @@ import {useCallback, useEffect, useState} from 'react';
 import {AttributeGroup} from '../../models';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
-const useFilteredAttributeGroups = (groups: AttributeGroup[]) => {
-  const [filteredGroups, setFilteredGroups] = useState<AttributeGroup[]>([]);
+const useFilteredAttributeGroups = (attributeGroup: AttributeGroup[]) => {
+  const [filteredAttributeGroups, setFilteredAttributeGroups] = useState<AttributeGroup[]>([]);
   const userContext = useUserContext();
 
   useEffect(() => {
-    setFilteredGroups(groups);
-  }, [groups]);
+    setFilteredAttributeGroups(attributeGroup);
+  }, [attributeGroup]);
 
   const search = useCallback(
     (searchValue: string) => {
-      setFilteredGroups(
-        Object.values(groups).filter((group: AttributeGroup) =>
+      setFilteredAttributeGroups(
+        Object.values(attributeGroup).filter((group: AttributeGroup) =>
           (group.labels[userContext.get('catalogLocale')] ?? group.code)
             .toLowerCase()
             .includes(searchValue.toLowerCase().trim())
         )
       );
     },
-    [groups]
+    [attributeGroup]
   );
 
   return {
-    filteredGroups,
+    filteredAttributeGroups,
     search,
   };
 };
