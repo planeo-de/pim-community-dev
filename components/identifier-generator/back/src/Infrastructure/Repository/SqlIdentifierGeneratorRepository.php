@@ -45,9 +45,9 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
             'code' => $identifierGenerator->code()->asString(),
             'target' => $identifierGenerator->target()->asString(),
             'delimiter' => $identifierGenerator->delimiter()->asString(),
-            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
             'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
         ];
 
@@ -75,7 +75,7 @@ SQL;
         try {
             $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
-            throw new UnableToSaveIdentifierGeneratorException(sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+            throw new UnableToSaveIdentifierGeneratorException(\sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 
@@ -85,9 +85,9 @@ SQL;
             'code' => $identifierGenerator->code()->asString(),
             'target' => $identifierGenerator->target()->asString(),
             'delimiter' => $identifierGenerator->delimiter()->asString(),
-            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
             'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
         ];
 

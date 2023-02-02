@@ -43,7 +43,7 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                         Assert::minLength($productProjection->familyCode(), $familyProperty->process()->value());
                     } catch (\InvalidArgumentException) {
                         throw new UnableToTruncateException(
-                            sprintf('%s%s', $prefix, $productProjection->familyCode()),
+                            \sprintf('%s%s', $prefix, $productProjection->familyCode()),
                             $identifierGenerator->target()->asString(),
                             $productProjection->familyCode()
                         );
