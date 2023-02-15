@@ -103,7 +103,7 @@ echo "Launch branch migrations..."
 docker-compose run --rm php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
 echo "Dump 6.0 with migrations database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=root --user=root $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_60_database_with_migrations.sql
+docker-compose run --rm php bash -c "bin/console pimee:database:inspect -f --db-name=$APP_DATABASE_NAME --env=test && bin/console pimee:database:diff --env=test"
 
 echo "Dump 6.0 with migrations index..."
 docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_60_index_with_migrations.json
@@ -118,7 +118,7 @@ echo "Install fresh branch database and indexes..."
 APP_ENV=test make database
 
 echo "Dump branch database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=root --user=root $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_branch_database.sql
+docker-compose run --rm php bash -c "bin/console pimee:database:inspect -f --db-name=$APP_DATABASE_NAME --env=test && bin/console pimee:database:diff --env=test"
 
 echo "Dump branch index..."
 docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_branch_index.json
@@ -128,9 +128,6 @@ docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"
 echo "##"
 echo "## STEP 4: compare the results"
 echo "##"
-
-echo "Compare database 60+PR migrations from database PR..."
-diff /tmp/structure_changes/dump_60_database_with_migrations.sql /tmp/structure_changes/dump_branch_database.sql --context=10
 
 echo "Compare index 60+PR migrations from index PR..."
 sed -i -r 's/([0-9]+_[0-9]+_[0-9]+_)?[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/version_uuid/g' /tmp/structure_changes/dump_60_index_with_migrations.json
