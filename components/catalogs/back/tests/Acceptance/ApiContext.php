@@ -14,11 +14,13 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -797,6 +799,9 @@ class ApiContext implements Context
                     },
                     "type": {
                       "type": "string"
+                    },
+                    "groups": {
+                      "type": "string"
                     }
                   }
                 }
@@ -891,6 +896,11 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'groups' => [
+                        'source' => 'categories',
+                        'scope' => null,
+                        'locale' => 'en_US',
+                    ],
                 ],
             ),
         );
@@ -903,6 +913,15 @@ class ApiContext implements Context
             'akeneoLogoImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/akeneo.jpg'),
             'ziggyImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/ziggy.png'),
         ];
+
+        $categories = [
+            'clothing' => ['code' => 'clothing', 'labels' => ['en_US' => 'Clothing']],
+            'cotton_clothing' => ['code' => 'cotton_clothing', 'labels' => ['en_US' => 'Cotton clothing']],
+        ];
+
+        foreach ($categories as $category) {
+            $this->createCategory($category);
+        }
 
         $products = [
             [
@@ -922,6 +941,7 @@ class ApiContext implements Context
                     'canada',
                     'brazil',
                 ],
+                'groups' => ['clothing', 'cotton_clothing'],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -940,6 +960,7 @@ class ApiContext implements Context
                     'canada',
                     'italy',
                 ],
+                'groups' => ['clothing', 'cotton_clothing'],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -958,6 +979,7 @@ class ApiContext implements Context
                     'france',
                     'brazil',
                 ],
+                'groups' => ['clothing'],
             ],
         ];
 
@@ -1062,6 +1084,7 @@ class ApiContext implements Context
                         $product['price'],
                         \array_keys($product['price']),
                     )),
+                    new SetCategories($product['groups']),
                 ],
             );
 
@@ -1112,6 +1135,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
+                'groups' => 'Clothing, Cotton clothing',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1127,6 +1151,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
+                'groups' => 'Clothing',
             ],
         ];
 
@@ -1171,6 +1196,7 @@ class ApiContext implements Context
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
+            'groups' => 'Clothing, Cotton clothing',
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);
@@ -1249,5 +1275,13 @@ class ApiContext implements Context
             'attributes' => $attributes,
         ]);
         $this->container->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createCategory(array $data = []): void
+    {
+        /** @var CategoryInterface $category */
+        $category = $this->container->get('pim_catalog.factory.category')->create();
+        $this->container->get('pim_catalog.updater.category')->update($category, $data);
+        $this->container->get('pim_catalog.saver.category')->save($category);
     }
 }

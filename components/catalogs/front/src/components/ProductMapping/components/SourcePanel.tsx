@@ -88,13 +88,13 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
             }
 
-            if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
+            if (attributeType === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
                 source = {...source, parameters: {...source.parameters, currency: source.currency ?? null}};
             }
             onChange(source);
         },
 
-        [onChange, shouldDisplayTranslationValue]
+        [onChange, shouldDisplayTranslationValue, attributeType]
     );
 
     if (null === target) {
