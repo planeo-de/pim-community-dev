@@ -5,12 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -53,52 +48,6 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
             return;
         }
 
-        switch ($property['process']['type']) {
-            case Process::PROCESS_TYPE_NO:
-                $this->validateProcessTypeNo($property['process']);
-
-                break;
-            case Process::PROCESS_TYPE_TRUNCATE:
-                $this->validateProcessTypeTruncate($property['process'], $constraint);
-
-                break;
-        }
-    }
-
-    /**
-     * @param array<string, mixed> $property
-     */
-    private function validateProcessTypeNo(array $property): void
-    {
-        $this->validator->inContext($this->context)->validate($property, new Collection([
-            'fields' => [
-                'type' => null,
-            ],
-        ]));
-    }
-
-    /**
-     * @param array<string, mixed> $property
-     */
-    private function validateProcessTypeTruncate(array $property, FamilyPropertyShouldBeValid $constraint): void
-    {
-        $this->validator->inContext($this->context)->validate($property, new Collection([
-            'fields' => [
-                'type' => null,
-                'operator' => new Choice(
-                    choices: [Process::PROCESS_OPERATOR_EQ, Process::PROCESS_OPERATOR_LTE],
-                    message: $constraint->processUnknownOperator
-                ),
-                'value' => [
-                    new Type([
-                        'type' => 'integer',
-                    ]),
-                    new Range([
-                        'min' => 1,
-                        'max' => 5,
-                    ]),
-                ],
-            ],
-        ]));
+        $this->validator->inContext($this->context)->validate($property['process'], new PropertyProcessShouldBeValid());
     }
 }

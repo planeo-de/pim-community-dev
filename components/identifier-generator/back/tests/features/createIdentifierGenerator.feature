@@ -43,7 +43,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if property does not exist
     When I try to create an identifier generator with an unknown property
-    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number", "family".'
+    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number", "family", "simple_select".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator if structure contains too many properties
@@ -160,6 +160,33 @@ Feature: Create Identifier Generator
     Then I should not get any error
     Then The identifier generator is saved in the repository
     And I should not get any error
+
+  # Structure : Simple Select
+  Scenario: Cannot create an identifier generator with simple select property without attribute code
+    When I try to create an identifier generator with a simple select property without attribute code
+    Then I should get an error with message 'structure[0][attributeCode]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with simple select property without process field
+    When I try to create an identifier generator with simple select property without process field
+    Then I should get an error with message 'structure[0][process]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with an unknown attribute in a simple select property
+    When I try to create an identifier generator with a simple_select property with unknown attribute
+    Then I should get an error with message 'structure[0][attributeCode]: The "unknown" attribute does not exist.'
+    And the identifier should not be created
+
+  Scenario: Can create an identifier generator with a simple select property and a truncate process
+    When I try to create an identifier generator with a simple select process with type truncate and operator = and 1 as value
+    Then I should not get any error
+    Then The identifier generator is saved in the repository
+    And I should not get any error
+
+  Scenario: Cannot create an identifier generator with wrong attribute type in a simple select property
+    When I try to create an identifier generator with a simple_select property with name attribute
+    Then I should get an error with message 'structure[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+    And the identifier should not be created
 
   # Conditions
   Scenario: Cannot create another condition type than defined ones
