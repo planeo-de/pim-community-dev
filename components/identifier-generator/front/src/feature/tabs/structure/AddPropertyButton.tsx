@@ -125,7 +125,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           >
             {flatItems?.map(({id, text, isSection, isVisible}) =>
               isSection ? (
-                <Dropdown.Section key={id}>{text}</Dropdown.Section>
+                <Dropdown.Section key={`section-${id}`}>{text}</Dropdown.Section>
               ) : isVisible && (
                 <Dropdown.Item key={id} onClick={() => addProperty(id)}>
                   {text}
