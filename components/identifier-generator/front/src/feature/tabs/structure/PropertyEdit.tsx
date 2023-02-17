@@ -1,9 +1,9 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
-import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit} from './edit/';
+import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit} from './edit';
 import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SimpleSelectPropertyEdit} from './SimpleSelectPropertyEdit';
+import {SimpleSelectPropertyEdit} from './edit/SimpleSelectPropertyEdit';
 
 type PropertyEditProps = {
   selectedProperty: Property;
