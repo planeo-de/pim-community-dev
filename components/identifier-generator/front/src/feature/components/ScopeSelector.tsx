@@ -7,9 +7,10 @@ import {Styled} from './Styled';
 type ScopeSelectorProps = {
   value: ChannelCode | null;
   onChange: (code: ChannelCode) => void;
+  isHorizontal?: boolean;
 };
 
-const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
+const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange, isHorizontal = true}) => {
   const translate = useTranslate();
   const currentCatalogLocale = useUserContext().get('catalogLocale');
   const {data: options, isLoading, error} = useGetScopes();
@@ -30,6 +31,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
       onChange={onChange}
       placeholder={translate('pim_common.channel')}
       clearable={false}
+      isHorizontal={isHorizontal}
     >
       {options?.map(({code, labels}) => (
         <SelectInput.Option value={code} key={code}>

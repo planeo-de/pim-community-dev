@@ -3,6 +3,7 @@ import {Property, PROPERTY_NAMES} from '../../models';
 import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit} from './edit/';
 import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {SimpleSelectPropertyEdit} from './SimpleSelectPropertyEdit';
 
 type PropertyEditProps = {
   selectedProperty: Property;
@@ -18,7 +19,7 @@ const components = {
   [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
   [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
   [PROPERTY_NAMES.FAMILY]: FamilyPropertyEdit,
-  [PROPERTY_NAMES.SIMPLE_SELECT]: FamilyPropertyEdit, // TODO replace by SimpleSelectPropertyEdit
+  [PROPERTY_NAMES.SIMPLE_SELECT]: SimpleSelectPropertyEdit,
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {
