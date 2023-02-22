@@ -237,3 +237,6 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\controller\MassDeleteAttributeGroupsController:
+        public: true
