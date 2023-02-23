@@ -118,7 +118,6 @@ const AttributeGroupsIndex: FC = () => {
                 unselectAttributeGroups={attributeGroups.filter(
                   (attributeGroup: AttributeGroup) => !selection.collection.includes(attributeGroup)
                 )}
-                onConfirm={() => {}}
               />
             )}
           </Toolbar.ActionsContainer>

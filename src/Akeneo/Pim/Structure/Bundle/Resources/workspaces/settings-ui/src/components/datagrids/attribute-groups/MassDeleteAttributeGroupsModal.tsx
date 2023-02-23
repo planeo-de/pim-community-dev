@@ -4,11 +4,11 @@ import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 
 import {DoubleCheckDeleteModal, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {getLabel} from 'pimui/js/i18n';
+import {useMassDeleteAttributeGroups} from '../../../hooks/attribute-groups/useMassDeleteAttributeGroups';
 
 type MassDeleteAttributeGroupsModalProps = {
   selectedAttributeGroups: AttributeGroup[];
   unselectAttributeGroups: AttributeGroup[];
-  onConfirm: () => void;
 };
 
 const ModalContent = styled.div`
@@ -21,7 +21,6 @@ const ModalContent = styled.div`
 const MassDeleteAttributeGroupsModal = ({
   selectedAttributeGroups,
   unselectAttributeGroups,
-  onConfirm,
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
@@ -29,6 +28,7 @@ const MassDeleteAttributeGroupsModal = ({
   const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const userContext = useUserContext();
+  const [massDeleteAttributeGroups] = useMassDeleteAttributeGroups();
 
   useAutoFocus(inputRef);
 
@@ -53,7 +53,7 @@ const MassDeleteAttributeGroupsModal = ({
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
-          onConfirm={() => onConfirm()}
+          onConfirm={() => massDeleteAttributeGroups(selectedAttributeGroups)}
           onCancel={closeMassDeleteModal}
         >
           <ModalContent>
