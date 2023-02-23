@@ -23,6 +23,8 @@ const useMassDeleteAttributeGroups = () => {
     if (!response.ok) {
       console.error('Error while deleting attribute groups');
     }
+
+    return;
   };
 
   return [massDeleteAttributeGroups];

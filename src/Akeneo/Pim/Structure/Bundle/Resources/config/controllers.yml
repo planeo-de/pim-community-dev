@@ -240,3 +240,5 @@ services:
 
     Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController:
         public: true
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'

@@ -53,7 +53,10 @@ const MassDeleteAttributeGroupsModal = ({
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
-          onConfirm={() => massDeleteAttributeGroups(selectedAttributeGroups)}
+          onConfirm={async () => {
+            await massDeleteAttributeGroups(selectedAttributeGroups);
+            closeMassDeleteModal();
+          }}
           onCancel={closeMassDeleteModal}
         >
           <ModalContent>
