@@ -28,8 +28,12 @@ final class MassDeleteAttributeGroupsController
 
         $attributeGroupCodes = $request->get('codes');
 
+        // TODO add code list validation
+
         $config = [
-            'codes' => $attributeGroupCodes,
+            'filters' => [
+                'codes' => $attributeGroupCodes,
+            ],
         ];
 
         $this->publishJobToQueue->publish('delete_attribute_groups', $config);

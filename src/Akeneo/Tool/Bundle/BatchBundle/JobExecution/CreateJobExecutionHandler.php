@@ -87,7 +87,6 @@ class CreateJobExecutionHandler implements CreateJobExecutionHandlerInterface
         array $jobExecutionConfig
     ): JobParameters {
         $rawParameters = array_merge($jobInstance->getRawParameters(), $jobExecutionConfig);
-
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 

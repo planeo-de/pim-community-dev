@@ -432,5 +432,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
               - '@pim_connector.step.delete_attribute_groups'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
