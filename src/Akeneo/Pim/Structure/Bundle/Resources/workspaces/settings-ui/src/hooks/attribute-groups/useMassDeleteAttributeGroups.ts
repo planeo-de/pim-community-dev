@@ -18,7 +18,7 @@ const useMassDeleteAttributeGroups = () => {
       }),
     });
 
-    await response.json();
+    void response;
 
     if (!response.ok) {
       console.error('Error while deleting attribute groups');
