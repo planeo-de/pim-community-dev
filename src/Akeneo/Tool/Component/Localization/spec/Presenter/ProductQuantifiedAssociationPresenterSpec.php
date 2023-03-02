@@ -82,7 +82,7 @@ class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
             ->willReturn([]);
 
         $value = 'invalid_uuid';
-        $this->present($value)->shouldReturn('[invalid_uuid]');
+        $this->present($value)->shouldReturn('invalid_uuid');
     }
 
     public function it_presents_uuid_when_product_is_not_found(
@@ -110,6 +110,6 @@ class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
             ->willReturn([$uuid => 'my-identifier', $uuid2 => null]);
 
         $value = implode(',', [$uuid, $uuid2, $uuid3, $uuid4]);
-        $this->present($value)->shouldReturn(sprintf('%s,[%s],[%s],[%s]', 'my-identifier', $uuid2, $uuid3, $uuid4));
+        $this->present($value)->shouldReturn(sprintf('%s,[%s],[%s],%s', 'my-identifier', $uuid2, $uuid3, $uuid4));
     }
 }

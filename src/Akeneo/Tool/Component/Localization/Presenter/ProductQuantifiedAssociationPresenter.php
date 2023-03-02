@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Component\Localization\Presenter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -18,12 +19,13 @@ class ProductQuantifiedAssociationPresenter implements PresenterInterface
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @param array $options
      * @return string
      */
     public function present($value, array $options = []): string
     {
+        Assert::string($value);
         if (empty($value)) {
             return $value;
         }
@@ -31,11 +33,11 @@ class ProductQuantifiedAssociationPresenter implements PresenterInterface
         $formattedValues = [];
         $validUuids = \array_filter(\array_map(fn (string $uuid) => Uuid::isValid($uuid) ? $uuid : null, $values));
         $identifiersFromUuids = $this->findIdentifier->fromUuids($validUuids);
-        foreach ($values as $uuid) {
-            if (isset($identifiersFromUuids[$uuid])) {
-                $formattedValues[] = $identifiersFromUuids[$uuid];
+        foreach ($values as $key) {
+            if (isset($identifiersFromUuids[$key])) {
+                $formattedValues[] = $identifiersFromUuids[$key];
             } else {
-                $formattedValues[] = sprintf('[%s]', $uuid);
+                $formattedValues[] = in_array($key, $validUuids) ? sprintf('[%s]', $key) : $key;
             }
         }
 
