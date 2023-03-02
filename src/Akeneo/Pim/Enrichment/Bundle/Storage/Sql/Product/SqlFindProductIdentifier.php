@@ -28,6 +28,9 @@ final class SqlFindProductIdentifier implements FindIdentifier
         return false === $identifier ? null : $identifier;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fromUuids(array $uuids): array
     {
         if ([] === $uuids) {

@@ -12,6 +12,9 @@ interface FindIdentifier
 {
     public function fromUuid(string $uuid): null|string;
 
-    /** @return array<string, string> */
+    /**
+     * @param string[] $uuids
+     * @return array<string, string>
+     */
     public function fromUuids(array $uuids): array;
 }

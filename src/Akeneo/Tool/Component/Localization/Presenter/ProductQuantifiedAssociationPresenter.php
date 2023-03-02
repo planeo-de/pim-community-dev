@@ -17,6 +17,11 @@ class ProductQuantifiedAssociationPresenter implements PresenterInterface
     {
     }
 
+    /**
+     * @param $value
+     * @param array $options
+     * @return string
+     */
     public function present($value, array $options = []): string
     {
         if (empty($value)) {
