@@ -73,6 +73,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                                             - Optional: ~
                                         operator:
                                             - Optional: ~
+                                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\PropertyProcessShouldBeValid: ~
                         attributeCode:
                             - Optional: ~
         labels:

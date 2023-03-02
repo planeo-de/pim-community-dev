@@ -40,14 +40,6 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                     '{{ field }}' => 'process',
                 ])
                 ->addViolation();
-
-            return;
         }
-
-        if (!\array_key_exists('type', $property['process'])) {
-            return;
-        }
-
-        $this->validator->inContext($this->context)->validate($property['process'], new PropertyProcessShouldBeValid());
     }
 }
